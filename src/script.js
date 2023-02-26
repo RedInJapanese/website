@@ -23,7 +23,7 @@ const scene = new THREE.Scene()
 
 var meshes = []
 const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe:true })
 
 for(var x = -50; x<50; x+=2){
     let mesh = new THREE.Mesh(geometry, material)
