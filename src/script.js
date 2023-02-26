@@ -20,10 +20,21 @@ const scene = new THREE.Scene()
 /**
  * Object
  */
+
+var meshes = []
 const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-const mesh = new THREE.Mesh(geometry, material)
-scene.add(mesh)
+
+for(var x = -50; x<50; x+=2){
+    let mesh = new THREE.Mesh(geometry, material)
+    mesh.position.x = x
+    mesh.rotation.x = Math.random()
+    mesh.rotation.y = Math.random()
+    meshes.push(mesh)
+    scene.add(mesh)
+}
+// const mesh = new THREE.Mesh(geometry, material)
+// scene.add(mesh)
 
 // scene.add(mesh2)
 
@@ -81,26 +92,30 @@ var x = 0
 const tick = () =>
 {
     const elapsed = clock.getElapsedTime()
+    meshes.forEach((e,i)=>{
+        e.position.y = Math.sin(elapsed-i)
+
+    })
     // mesh.rotation.x=elapsedTime*0.1     //consistent spinning across devices
     // mesh.rotation.y = elapsedTime * 0.1
     //rods.rotation.z=elapsedTime*.9
     // mesh2.rotation.y = elapsedTime * -0.1
-    if(mesh.position.x >= 5){
-        x+=1
-        if(x%2 != 0){
-            mesh.material.color.set('blue')
-        }
-        else{
-            mesh.material.color.set('red')
-        }
-        mesh.position.x = -5
-    }
-    else{
-        mesh.position.x += 0.001*elapsed/60
-    }
-    mesh.rotation.y+=0.001*elapsed/60
-    mesh.rotation.z+=0.001*elapsed/60
-    mesh.position.y = Math.sin(elapsed)
+    // if(mesh.position.x >= 5){
+    //     x+=1
+    //     if(x%2 != 0){
+    //         mesh.material.color.set('blue')
+    //     }
+    //     else{
+    //         mesh.material.color.set('red')
+    //     }
+    //     mesh.position.x = -5
+    // }
+    // else{
+    //     mesh.position.x += 0.001*elapsed/60
+    // }
+    // mesh.rotation.y+=0.001*elapsed/60
+    // mesh.rotation.z+=0.001*elapsed/60
+    // mesh.position.y = Math.sin(elapsed)
     // camera.position.x = Math.sin(elapsed)
     // camera.position.y = Math.cos(elapsed)
 
