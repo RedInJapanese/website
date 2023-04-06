@@ -1,105 +1,80 @@
 import * as THREE from 'three'
-import { BooleanKeyframeTrack, Color } from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-
-/**
- * Textures
- */
-
-
-/**
- * Base
- */
+import { MeshDepthMaterial } from 'three'
+import { VRButton } from 'three/addons/webxr/VRButton.js'
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
-// scene.background = new THREE.Color( '#F2EFE9' );
 
-/**
- * Object
- */
+// Object
 
-var meshes = []
-const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe:true })
 
-for(var x = -50; x<50; x+=2){
-    let mesh = new THREE.Mesh(geometry, material)
-    mesh.position.x = x
-    mesh.rotation.x = Math.random()
-    mesh.rotation.y = Math.random()
-    meshes.push(mesh)
-    scene.add(mesh)
-}
-// const mesh = new THREE.Mesh(geometry, material)
-// scene.add(mesh)
+const radius = 10;
+const widthSegments = 12;
+const heightSegments = 8;
+const geom = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
+const mat = new THREE.PointsMaterial({
+    color: 'red',
+    size: 0.7,     // in world units
+});
 
-// scene.add(mesh2)
+const points = new THREE.Points(geom, mat);
+scene.add(points);
 
-/**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
+const radius2 = 7;
+const widthSegments2 = 10;
+const heightSegments2 = 8;
+const geom2 = new THREE.SphereGeometry(radius2, widthSegments2, heightSegments2);
+const mat2 = new THREE.PointsMaterial({
+    color: 'orange',
+    size: 0.3,     // in world units
+});
+const points2 = new THREE.Points(geom2, mat2);
+scene.add(points2);
+
+const radius3 = 7;
+const widthSegments3 = 8;
+const heightSegments3 = 8;
+const geom3 = new THREE.SphereGeometry(radius3, widthSegments3, heightSegments3);
+const mat3 = new THREE.PointsMaterial({
+    color: 'yellow',
+    size: 0.3,     // in world units
+});
+const points3 = new THREE.Points(geom3, mat3);
+scene.add(points3);
+// Camera
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight)
+camera.position.z = 10
+scene.add(camera)
 
 window.addEventListener('resize', () =>
 {
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
 
     // Update camera
-    camera.aspect = sizes.width / sizes.height
+    camera.aspect = window.innerWidth / window.innerHeight
     camera.updateProjectionMatrix()
 
     // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
+    renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
-
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 5
-camera.position.y = 5
-camera.position.z = 5
-scene.add(camera)
-
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
-
-/**
- * Renderer
- */
+// Renderer
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-/**
- * Animate
- */
-const clock = new THREE.Clock()
-var x = 0
-const tick = () =>
-{
-    const elapsed = clock.getElapsedTime()
-    meshes.forEach((e,i)=>{
-        e.position.y = Math.sin(elapsed-i)
+renderer.setSize(window.innerWidth, window.innerHeight)
+document.body.appendChild( VRButton.createButton( renderer ) );
+renderer.xr.enabled = true;
+renderer.setAnimationLoop( function () {
 
-    })
-    // mesh.rotation.x=elapsedTime*0.1     //consistent spinning across devices
-    // mesh.rotation.y = elapsedTime * 0.1
-    //rods.rotation.z=elapsedTime*.9
-    // mesh2.rotation.y = elapsedTime * -0.1
+    const current_time = Date.now()
+    const delta_time = current_time-time
+    time = current_time
+    console.log(delta_time)
+
+    // const elapsed = clock.getElapsedTime()
     // if(mesh.position.x >= 5){
     //     x+=1
     //     if(x%2 != 0){
@@ -111,22 +86,29 @@ const tick = () =>
     //     mesh.position.x = -5
     // }
     // else{
-    //     mesh.position.x += 0.001*elapsed/60
+    //     mesh.position.x += 0.001*delta_time
     // }
-    // mesh.rotation.y+=0.001*elapsed/60
-    // mesh.rotation.z+=0.001*elapsed/60
+    // mesh.rotation.y+=0.001*delta_time
+    // mesh.rotation.z+=0.001*delta_time
     // mesh.position.y = Math.sin(elapsed)
     // camera.position.x = Math.sin(elapsed)
     // camera.position.y = Math.cos(elapsed)
+    // console.log('tic')
+    points.rotation.x+=0.0001*delta_time
+    points2.rotation.y+=0.0001*delta_time
+    points3.rotation.z+=0.0001*delta_time
 
-    // Update controls
-    controls.update()
-
-    // Render
     renderer.render(scene, camera)
+    window.requestAnimationFrame(tick) //passes in the tick function as an argument
+	renderer.render( scene, camera );
 
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+} );
+//animations
+const clock = new THREE.Clock()
+var x = 0
+var time = Date.now()
+function tick(){
+
 }
 
-tick()
+tick() 
