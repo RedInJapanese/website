@@ -59,3 +59,8 @@ main
 } 
  
 .bolded { font-weight: bold; }
+
+img {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+}
