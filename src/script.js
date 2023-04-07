@@ -38,7 +38,7 @@ const widthSegments3 = 8;
 const heightSegments3 = 8;
 const geom3 = new THREE.SphereGeometry(radius3, widthSegments3, heightSegments3);
 const mat3 = new THREE.PointsMaterial({
-    color: 'blue',
+    color: 'yellow',
     size: 0.3,     // in world units
 });
 const points3 = new THREE.Points(geom3, mat3);
