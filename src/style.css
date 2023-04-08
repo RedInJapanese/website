@@ -22,6 +22,11 @@ p{
     font-weight: 100;
     text-align: left;
 }
+p2{
+    font-size: 2em;
+    font-weight: 100;
+    text-align: left;
+}
 h2
 {
     font-weight: 100;
@@ -55,7 +60,7 @@ main
     margin:0.5em;
 }
 .socialicon:hover{
-    opacity:0.8;
+    opacity:0.2;
 } 
  
 .bolded { font-weight: bold; }
